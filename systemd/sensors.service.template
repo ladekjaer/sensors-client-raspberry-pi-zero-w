@@ -1,0 +1,19 @@
+[Unit]
+Description=Reporting sensor data to a server
+After=network.target
+
+[Service]
+User=pi
+Environment=URL=http://<SERVER DOMAIN>:<PORT>/stats/
+Environment=INTERVAL=60
+Environment=SENSORS_API_KEY=<ACCESS KEY>
+Environment=PYTHONUNBUFFERED=1
+
+Restart=always
+RestartSec=5s
+
+WorkingDirectory=/home/pi/sensors/
+ExecStart=/usr/bin/python3 sensors.py
+
+[Install]
+WantedBy=multi-user.target
