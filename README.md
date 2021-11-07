@@ -7,6 +7,8 @@ NB: Remember to set time zone!
 
 To prepare the Raspberry Pi for 'sensors-client' first acquire and install the Raspberry Pi OS. It is easiest obtainable through https://www.raspberrypi.com/software/. By pressing *Ctrl-Shift-X* before writing to the SD Card you will be able to later skip the steps concerning SSH, WiFi and Time Zone.
 
+Consider the lite version of Raspberry Pi OS, as it does not install the desktop environment.
+
 
 ### Enable SSH
 In the `boot` folder on the SD card from with the RPi run, there should be placed an empty file called `ssh` before first boot. This will enabled SSH. The file will be deleted automatically.
@@ -56,14 +58,42 @@ Pinout can now be show by
 $ pinout
 ```
 
+### Install dependency
+```sh
+$ pip3 install w1thermsensor
+$ export PATH=$PATH:/home/pi/.local/bin
+```
+
 ## Installing sensors
-* Put `sensors.py` in `/home/pi/sensors/`
-* Update `URL` and `SENSORS_API_KEY` in `sensors.service`
-* Copy `sensors.service` to `/etc/systemd/system/` (or make a link: `sudo ln -s /home/pi/sensors/sensors.service /etc/systemd/system/sensors.service`)
-* Run as root
-	* `systemctl daemon-reload`
-	* `systemctl enable sensors`
-	* `systemctl start sensors`
+Clone the repository and rename the directory
+```sh
+$ git clone https://github.com/ladekjaer/sensors-client-raspberry-pi-zero-w.git
+$ mv sensors-client-raspberry-pi-zero-w sensors
+```
+
+### Enable the One-Wire interface
+This makes it possible to read from the DS18B20 temperature sensors. Open `/boot/config.txt` and add `dtoverlay=w1-gpio` as the last line. Reboot the Raspberry Pi.
+
+### Setup a system service
+Make `sensors.service` a copy of `sensors.service.template`
+```sh
+$ cp sensors.service.template sensors.service
+```
+
+Update `URL` and `SENSORS_API_KEY` in `sensors.service`
+
+Now, add `sensors.service` to the `systemd` system
+```sh
+$ sudo ln -s /home/pi/sensors/sensors.service /etc/systemd/system/sensors.service
+$ sudo systemctl daemon-reload
+$ sudo systemctl enable sensors
+$ sudo systemctl start sensors
+```
 
 ## Managing sensors
 Use `systemctl` and `journalctl`
+
+To see the log run
+```sh
+$ journalctl -u sensors
+```
