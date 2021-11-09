@@ -2,13 +2,27 @@
 
 This little piece of software install on a *Raspberry Pi Zero W*. It reads from any/all connected DS18B20 temperature sensors and sends this data to the chosen 'sensors-api' server.
 
-## Setting up a Raspberry Pi
+## Content
+* [Preparing a Raspberry Pi](#preparing-a-raspberry-pi)
+	* [Enable SSH](#enable-ssh)
+	* [Enable WiFi](#enable-wifi)
+	* [Set System Time](#set-system-time)
+	* [Add SSH public key to `authorized_keys` (Optional)](#add-ssh-public-key-to-authorized_keys-(optional))
+	* [Update the system](#update-the-system)
+	* [Install `pip`](#install-pip)
+	* [pinout](#pinout)
+	* [Install dependency](#install-dependency)
+* [Installing sensors](#installing-sensors)
+	* [Enable the One-Wire interface](#enable-the-one-wire-interface)
+	* [Setup a system service](#setup-a-system-service)
+	* [Managing sensors](#managing-sensors)
+
+## Preparing a Raspberry Pi
 NB: Remember to set time zone!
 
 To prepare the Raspberry Pi for 'sensors-client' first acquire and install the Raspberry Pi OS. It is easiest obtainable through https://www.raspberrypi.com/software/. By pressing *Ctrl-Shift-X* before writing to the SD Card you will be able to later skip the steps concerning SSH, WiFi and Time Zone.
 
 Consider the lite version of Raspberry Pi OS, as it does not install the desktop environment.
-
 
 ### Enable SSH
 In the `boot` folder on the SD card from with the RPi run, there should be placed an empty file called `ssh` before first boot. This will enabled SSH. The file will be deleted automatically.
@@ -23,12 +37,12 @@ In the `boot` folder on the SD card from with the RPi run, place a file called `
 
 The file left in the `boot` folder will automatically be deleted after copied to `/etc/wpa_supplicant/wpa_supplicant.conf`.
 
-### Set Time Zone
+### Set System Zone
 Open the config
 ```sh
 $ sudo raspi-config
 ```
-Pick `LoLocalisation Options` and there after `Change Time Zone`.
+Pick `Localisation Options` and there after `Change Time Zone`.
 
 ### Add SSH public key to `authorized_keys` (Optional)
 Add your SSH public key as a line in
@@ -97,3 +111,5 @@ To see the log run
 ```sh
 $ journalctl -u sensors
 ```
+
+DigitalOcean has an easy [guide to journalctl](https://www.digitalocean.com/community/tutorials/how-to-use-journalctl-to-view-and-manipulate-systemd-logs)
