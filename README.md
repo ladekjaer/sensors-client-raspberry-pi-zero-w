@@ -7,7 +7,7 @@ This little piece of software install on a *Raspberry Pi Zero W*. It reads from 
 	* [Enable SSH](#enable-ssh)
 	* [Enable WiFi](#enable-wifi)
 	* [Set System Time](#set-system-time)
-	* [Add SSH public key to `authorized_keys` (Optional)](#add-ssh-public-key-to-authorized_keys-(optional))
+	* [Add SSH public key to `authorized_keys` (Optional)](#add-ssh-public-key-to-authorized_keys-optional)
 	* [Update the system](#update-the-system)
 	* [Install `pip`](#install-pip)
 	* [pinout](#pinout)
@@ -15,7 +15,7 @@ This little piece of software install on a *Raspberry Pi Zero W*. It reads from 
 * [Installing sensors](#installing-sensors)
 	* [Enable the One-Wire interface](#enable-the-one-wire-interface)
 	* [Setup a system service](#setup-a-system-service)
-	* [Managing sensors](#managing-sensors)
+* [Managing sensors](#managing-sensors)
 
 ## Preparing a Raspberry Pi
 NB: Remember to set time zone!
@@ -37,7 +37,7 @@ In the `boot` folder on the SD card from with the RPi run, place a file called `
 
 The file left in the `boot` folder will automatically be deleted after copied to `/etc/wpa_supplicant/wpa_supplicant.conf`.
 
-### Set System Zone
+### Set System Time
 Open the config
 ```sh
 $ sudo raspi-config
