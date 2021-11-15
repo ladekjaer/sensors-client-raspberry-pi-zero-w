@@ -12,6 +12,8 @@ This little piece of software install on a *Raspberry Pi Zero W*. It reads from 
 	* [Install `pip`](#install-pip)
 	* [pinout](#pinout)
 	* [Install dependency](#install-dependency)
+	* [Install git](#install-git)
+	* [Install `vim` (optional)](#install-vim-optional)
 * [Installing sensors](#installing-sensors)
 	* [Enable the One-Wire interface](#enable-the-one-wire-interface)
 	* [Setup a system service](#setup-a-system-service)
@@ -82,6 +84,12 @@ $ export PATH=$PATH:/home/pi/.local/bin
 The easies way to install `git` is through `apt`. Compiling from source to get the newest version, should not be needed here.
 ```sh
 $ sudo apt install git
+```
+
+### Install `vim` (optional)
+To get a more pleasent text editor
+```
+$ sudo apt install vim
 ```
 
 ## Installing sensors
