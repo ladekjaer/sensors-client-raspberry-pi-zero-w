@@ -79,7 +79,7 @@ $ export PATH=$PATH:/home/pi/.local/bin
 ```
 
 ### Install git
-The easies was to install `git` is through `apt`. Compiling from source to get the newest version, should not be needed here.
+The easies way to install `git` is through `apt`. Compiling from source to get the newest version, should not be needed here.
 ```sh
 $ sudo apt install git
 ```
