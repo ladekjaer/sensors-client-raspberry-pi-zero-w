@@ -112,7 +112,7 @@ Update `URL` and `SENSORS_API_KEY` in `sensors.service`
 
 Now, add `sensors.service` to the `systemd` system
 ```sh
-$ sudo ln -s /home/pi/sensors/sensors.service /etc/systemd/system/sensors.service
+$ sudo ln -s /home/pi/sensors/systemd/sensors.service /etc/systemd/system/sensors.service
 $ sudo systemctl daemon-reload
 $ sudo systemctl enable sensors
 $ sudo systemctl start sensors
