@@ -1,6 +1,8 @@
 [Unit]
 Description=Reporting sensor data to a server
 After=network.target
+Wants=time-sync.target
+After=time-sync.target
 
 [Service]
 User=pi

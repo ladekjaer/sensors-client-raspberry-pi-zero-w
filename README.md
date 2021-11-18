@@ -103,6 +103,10 @@ $ mv sensors-client-raspberry-pi-zero-w sensors
 This makes it possible to read from the DS18B20 temperature sensors. Open `/boot/config.txt` and add `dtoverlay=w1-gpio` as the last line. Reboot the Raspberry Pi.
 
 ### Setup a system service
+As the Raspberry Pi lacks a hardware clock, in order to get correct time data, we need to make sure, that the sensors software upon boot is only run after the time synchronization. To do so, enable the systemd service `systemd-time-wait-sync` by
+```sh
+$ sudo systemctl enable systemd-time-wait-sync.service
+```
 Make `sensors.service` a copy of `sensors.service.template`
 ```sh
 $ cp sensors.service.template sensors.service
