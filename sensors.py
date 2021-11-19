@@ -4,6 +4,7 @@ import sys
 import requests
 import socket
 import time
+import uuid
 from w1thermsensor import W1ThermSensor
 
 url = os.getenv('URL')
@@ -51,7 +52,8 @@ def getsensordata():
 			'thermostat_id': sensor.id,
 			'hostname': hostname,
 			'temp': sensor.get_temperature(),
-			'pi_id': pi_id
+			'pi_id': pi_id,
+			'uuid': str(uuid.uuid4())
 			})
 
 	return sensordata
