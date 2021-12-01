@@ -110,14 +110,18 @@ while True:
 
 	try:
 		res = requests.post(url, json = uncommitted, headers = hdr) # post uncommitted
-		ms = json.loads(res.text)
 	except:
 		print("ERROR: Unable to POST to server")
 	else:
-		print("Server http response code: %s\nAnd payload:" % (res.status_code))
-		print(json.dumps(ms, sort_keys=True, indent=4))
-		for measurement in ms: # Remove the measurements accepted by the server from the local database
-			if measurement['status'] in ['accepted', 'already accepted']:
-				remove_measurement_from_database(measurement)
+		try:
+			ms = json.loads(res.text)
+		except:
+			print("ERROR: Unable to parse HTTP response as JSON.")
+		else:
+			print("Server http response code: %s\nAnd payload:" % (res.status_code))
+			print(json.dumps(ms, sort_keys=True, indent=4))
+			for measurement in ms: # Remove the measurements accepted by the server from the local database
+				if measurement['status'] in ['accepted', 'already accepted']:
+					remove_measurement_from_database(measurement)
 
 	time.sleep(interval)
