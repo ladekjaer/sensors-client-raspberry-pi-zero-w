@@ -113,7 +113,7 @@ while True:
 	print("Server http response code: %s\nAnd payload:" % (res.status_code))
 	print(json.dumps(ms, sort_keys=True, indent=4))
 	for measurement in ms: # Remove the measurements accepted by the server from the local database
-		if measurement['status'] == 'accepted':
+		if measurement['status'] in ['accepted', 'already accepted']:
 			remove_measurement_from_database(measurement)
 
 	time.sleep(interval)
