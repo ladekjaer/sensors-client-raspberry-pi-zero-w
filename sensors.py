@@ -108,8 +108,10 @@ while True:
 	write_measurements_to_database(sensordata) # insert sensordata in DB
 	uncommitted = read_measurements_from_database() # read from DB
 	res = requests.post(url, json = uncommitted, headers = hdr) # post uncommitted
-	print("%s %s" % (res.status_code, res.text))
+	# print("%s %s" % (res.status_code, res.text))
 	ms = json.loads(res.text)
+	print("Server http response code: %s\nAnd payload:" % (res.status_code))
+	print(json.dumps(ms, sort_keys=True, indent=4))
 	for measurement in ms: # Remove the measurements accepted by the server from the local database
 		if measurement['status'] == 'accepted':
 			remove_measurement_from_database(measurement)
