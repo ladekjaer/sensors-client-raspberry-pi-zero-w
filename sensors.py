@@ -7,6 +7,7 @@ import time
 import uuid
 from w1thermsensor import W1ThermSensor
 import sqlite3
+import json
 
 # Get settings from environment variables
 url = os.getenv('URL')
@@ -59,29 +60,58 @@ def getsensordata():
 	sensordata = []
 
 	for sensor in W1ThermSensor.get_available_sensors():
-		print("Sensor %s has temperature %.2f" % (sensor.id, sensor.get_temperature()))
 		now = datetime.now().astimezone().isoformat()
+		temp = sensor.get_temperature()
+		print("Sensor %s has temperature %.2f" % (sensor.id, temp))
 		sensordata.append({
 			'timestamp': now,
 			'thermostat_id': sensor.id,
 			'hostname': hostname,
-			'temp': sensor.get_temperature(),
+			'temp': temp,
 			'pi_id': pi_id,
 			'uuid': str(uuid.uuid4())
-			})
+		})
 
 	return sensordata
 
 def write_measurements_to_database(measurements):
 	for measurement in measurements:
-		cur.execute("INSERT INTO measurements VALUES (:timestamp, :thermostat_id, :hostname, :temp, :pi_id, :uuid)", measurement)
+		cur.execute('''INSERT INTO measurements VALUES (
+							:timestamp,
+							:thermostat_id,
+							:hostname,
+							:temp,
+							:pi_id,
+							:uuid)''',
+							measurement)
+	con.commit()
+
+def read_measurements_from_database():
+	measurements = []
+	for measurement in cur.execute("SELECT * FROM measurements"):
+		measurements.append({
+			'timestamp': measurement[0],
+			'thermostat_id': measurement[1],
+			'hostname': measurement[2],
+			'temp': measurement[3],
+			'pi_id': measurement[4],
+			'uuid': measurement[5]
+		})
+	return measurements
+
+def remove_measurement_from_database(measurement):
+	cur.execute("DELETE FROM measurements WHERE uuid = ?", [measurement['uuid']])
 	con.commit()
 
 while True:
 	sensordata = getsensordata() #Read sensor data from the DS18B20 temperatures
 	write_measurements_to_database(sensordata) # insert sensordata in DB
-	# read from DB
-		# post read data in batches
-	res = requests.post(url, json = sensordata, headers = hdr)
+	uncommitted = read_measurements_from_database() # read from DB
+	res = requests.post(url, json = uncommitted, headers = hdr) # post uncommitted
 	print("%s %s" % (res.status_code, res.text))
+	ms = json.loads(res.text)
+	for measurement in ms: # Remove the measurements accepted by the server from the local database
+		if measurement['status'] == 'accepted':
+			remove_measurement_from_database(measurement)
+
 	time.sleep(interval)
