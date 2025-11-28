@@ -15,7 +15,7 @@ Restart=always
 RestartSec=5s
 
 WorkingDirectory=/home/pi/sensors/
-ExecStart=/usr/bin/python3 sensors.py
+ExecStart=/home/pi/sensors/.venv/bin/python sensors.py
 
 [Install]
 WantedBy=multi-user.target

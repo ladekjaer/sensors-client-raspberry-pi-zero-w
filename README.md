@@ -15,6 +15,7 @@ This little piece of software install on a *Raspberry Pi Zero W*. It reads from 
 	* [Install git](#install-git)
 	* [Install `vim` (optional)](#install-vim-optional)
 * [Installing sensors](#installing-sensors)
+	* [Create a Python virtual environment (recommended)](#create-a-python-virtual-environment-recommended)
 	* [Enable the One-Wire interface](#enable-the-one-wire-interface)
 	* [Setup a system service](#setup-a-system-service)
 * [Managing sensors](#managing-sensors)
@@ -98,6 +99,24 @@ Clone the repository and rename the directory
 $ git clone https://github.com/ladekjaer/sensors-client-raspberry-pi-zero-w.git
 $ mv sensors-client-raspberry-pi-zero-w sensors
 ```
+
+### Create a Python virtual environment (recommended)
+A virtual environment keeps this project's Python packages isolated from the system Python. If you use this, you can skip the "Install dependency" step above — dependencies will be installed into the venv from `requirements.txt`.
+
+```sh
+$ cd /home/pi/sensors
+$ python3 -m venv .venv
+$ source .venv/bin/activate
+$ pip install --upgrade pip
+$ pip install -r requirements.txt
+```
+
+Notes:
+- You must activate the environment in each new shell with:
+  ```sh
+  $ source /home/pi/sensors/.venv/bin/activate
+  ```
+- The provided systemd unit template already runs using the venv's Python (`ExecStart=/home/pi/sensors/.venv/bin/python sensors.py`). Create the venv before enabling/starting the service.
 
 ### Enable the One-Wire interface
 This makes it possible to read from the DS18B20 temperature sensors. Open `/boot/config.txt` and add `dtoverlay=w1-gpio` as the last line. Reboot the Raspberry Pi.
