@@ -1,5 +1,7 @@
 # Sensors Client for Raspberry Pi Zero W
 
+**NB: This project has been deprecated.**
+
 This little piece of software install on a *Raspberry Pi Zero W*. It reads from any/all connected DS18B20 temperature sensors and sends this data to the chosen 'sensors-api' server.
 
 ## Content
